@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>サイコロゲーム</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background: #f5f5f5;
+    }
+    h1 {
+      margin-top: 30px;
+    }
+    .dice-area {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 40px;
+    }
+    .dice-box {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+    .dice-box:hover {
+      transform: scale(1.05);
+    }
+    .dice {
+      font-size: 60px;
+      margin: 10px 0;
+    }
+    #result {
+      margin-top: 30px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    #hint {
+      margin-top: 10px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <h1>サイコロ勝負ゲーム</h1>
+  <p>プレイヤーのサイコロをクリックして勝負！</p>
+
+  <div class="dice-area">
+    <div class="dice-box" id="playerBox">
+      <div>プレイヤー</div>
+      <div class="dice" id="playerDice">🎲</div>
+    </div>
+
+    <div class="dice-box">
+      <div>CPU</div>
+      <div class="dice" id="cpuDice">🎲</div>
+    </div>
+  </div>
+
+  <div id="result">結果：まだ振っていません</div>
+  <div id="hint">※プレイヤー側のサイコロをクリックすると振れます</div>
+
+  <script>
+    const playerBox = document.getElementById('playerBox');
+    const playerDice = document.getElementById('playerDice');
+    const cpuDice = document.getElementById('cpuDice');
+    const result = document.getElementById('result');
+
+    // 1〜6のランダムな数値を返す
+    function rollDice() {
+      return Math.floor(Math.random() * 6) + 1;
+    }
+
+    // 数字からサイコロっぽい絵文字に変換
+    function numberToDiceFace(num) {
+      const faces = ['⚀','⚁','⚂','⚃','⚄','⚅'];
+      return faces[num - 1];
+    }
+
+    // プレイヤーのサイコロをクリックしたときの処理
+    playerBox.addEventListener('click', () => {
+      const playerValue = rollDice();
+      const cpuValue = rollDice();
+
+      playerDice.textContent = numberToDiceFace(playerValue);
+      cpuDice.textContent = numberToDiceFace(cpuValue);
+
+      if (playerValue > cpuValue) {
+        result.textContent = `結果：あなたの勝ち！ (${playerValue} vs ${cpuValue})`;
+        result.style.color = '#e53935';
+      } else if (playerValue < cpuValue) {
+        result.textContent = `結果：CPUの勝ち… (${playerValue} vs ${cpuValue})`;
+        result.style.color = '#1e88e5';
+      } else {
+        result.textContent = `結果：引き分け (${playerValue} vs ${cpuValue})`;
+        result.style.color = '#555';
+      }
+    });
+  </script>
+</body>
+</html>
